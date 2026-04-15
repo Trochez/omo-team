@@ -581,11 +581,43 @@ ls -la .omo/state/omo-team/*/workers/
 1. Increase `--timeout` argument
 2. Check for blocking operations in workers
 3. Review worker logs for stuck processes
+4. **Configure provider-level timeouts** (see below)
 
 ```bash
 # Increase timeout to 10 minutes
 /omo-team 3 "complex task" --timeout=600000
 ```
+
+### Provider-Level Timeout Configuration
+
+**CRITICAL**: To prevent 30-minute freezes when models hit rate limits, configure provider-level timeouts in `oh-my-opencode.json`:
+
+```json
+{
+  "provider": {
+    "nvidia": {
+      "timeout": 60000
+    },
+    "openai": {
+      "timeout": 60000
+    },
+    "google": {
+      "timeout": 60000
+    }
+  },
+  "background_task": {
+    "staleTimeoutMs": 60000
+  }
+}
+```
+
+**Why this matters:**
+- Default background task timeout is 30 minutes (1,800,000ms)
+- Provider timeout forces fallback after 60 seconds
+- Background task timeout overrides the hardcoded default
+- Without this, delegated agents can freeze for 30 minutes on rate limits
+
+**Known Issue (GitHub #2203):** Background tasks may ignore `fallback_models` configuration. Use provider-level timeouts as a workaround.
 
 ### Skill Loading Failures
 
