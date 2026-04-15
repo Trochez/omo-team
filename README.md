@@ -3,7 +3,8 @@
 **Version**: 1.1.0  
 **Compatible With**: OpenCode 1.x, oh-my-opencode 3.x+  
 **Author**: OpenCode Community  
-**License**: Open Source
+**License**: Open Source  
+**GitHub**: https://github.com/Trochez/omo-team
 
 ---
 
@@ -133,37 +134,42 @@ echo $OPENCODE
 # Should output: 1
 ```
 
-### Step 2: Install Skill
+### Step 2: Install Skills
 
-OMO-Team is a **user skill** located at:
+OMO-Team requires **two skills**:
 
-```
-~/.agents/skills/omo-team/SKILL.md
-~/.agents/skills/omo-team/DATASHEET.md
-~/.agents/skills/omo-team/README.md  (this file)
-~/.agents/skills/omo-worker/SKILL.md
-```
+1. **`/omo-team`** (this skill) - The leader that spawns workers
+2. **[`/omo-worker`](https://github.com/Trochez/omo-worker)** - Worker protocol (required dependency)
 
-**Option A: Manual Installation**
+**Option A: Clone Both Repositories (Recommended)**
 
 ```bash
-# Create skill directory
+# Create skill directories
 mkdir -p ~/.agents/skills/omo-team
 mkdir -p ~/.agents/skills/omo-worker
 
-# Copy skill files (if you have them)
-cp SKILL.md ~/.agents/skills/omo-team/
-cp DATASHEET.md ~/.agents/skills/omo-team/
-cp README.md ~/.agents/skills/omo-team/
-cp omo-worker/SKILL.md ~/.agents/skills/omo-worker/
+# Clone and install omo-team
+git clone https://github.com/Trochez/omo-team.git /tmp/omo-team
+cp /tmp/omo-team/SKILL.md ~/.agents/skills/omo-team/
+cp /tmp/omo-team/README.md ~/.agents/skills/omo-team/
+
+# Clone and install omo-worker (REQUIRED)
+git clone https://github.com/Trochez/omo-worker.git /tmp/omo-worker
+cp /tmp/omo-worker/SKILL.md ~/.agents/skills/omo-worker/
+cp /tmp/omo-worker/README.md ~/.agents/skills/omo-worker/
 ```
 
-**Option B: Clone from Repository**
+**Option B: Manual Installation**
 
 ```bash
-# If skills are in a git repository
-cd ~/.agents/skills
-git clone <repository-url> omo-team
+# Create skill directories
+mkdir -p ~/.agents/skills/omo-team
+mkdir -p ~/.agents/skills/omo-worker
+
+# Copy skill files (if you have them locally)
+cp SKILL.md ~/.agents/skills/omo-team/
+cp README.md ~/.agents/skills/omo-team/
+cp omo-worker/SKILL.md ~/.agents/skills/omo-worker/
 ```
 
 ### Step 3: Verify Installation
@@ -174,8 +180,10 @@ ls -la ~/.agents/skills/omo-team/
 ls -la ~/.agents/skills/omo-worker/
 
 # Should see:
-# SKILL.md
-# DATASHEET.md
+# omo-team/SKILL.md
+# omo-team/README.md
+# omo-worker/SKILL.md
+# omo-worker/README.md
 # README.md
 ```
 
@@ -624,9 +632,10 @@ ls -la .omo/state/omo-team/*/workers/
 **Symptoms**: `Skills not found: omo-worker`
 
 **Solutions**:
-1. Wait for skill registration (async)
-2. Use `load_skills=[]` and include protocol in prompt
-3. Retry after a few seconds
+1. Install [`/omo-worker`](https://github.com/Trochez/omo-worker) skill (see Installation section)
+2. Verify skill location: `ls ~/.agents/skills/omo-worker/SKILL.md`
+3. Wait for skill registration (async)
+4. Retry after a few seconds
 
 ---
 
@@ -639,11 +648,11 @@ ls -la .omo/state/omo-team/*/workers/
 | `/plan` | Plan first, then execute with omo-team |
 | `/ralph` | Use Ralph for verification after team completes |
 | `/ultraqa` | QA cycle after team execution |
-| `omo-worker` | **Required** - Worker protocol loaded in each spawned worker |
+| [`/omo-worker`](https://github.com/Trochez/omo-worker) | **Required** - Worker protocol loaded in each spawned worker |
 
 ### Required Dependency: omo-worker
 
-**`/omo-worker` is required** for `/omo-team` to function. Each spawned worker loads this skill to know:
+**[`/omo-worker`](https://github.com/Trochez/omo-worker) is required** for `/omo-team` to function. Each spawned worker loads this skill to know:
 - How to parse task context
 - Where to write results
 - How to report completion
@@ -651,10 +660,10 @@ ls -la .omo/state/omo-team/*/workers/
 
 **Install omo-worker:**
 ```bash
-git clone https://github.com/Trochez/omo-worker.git
-cd omo-worker
+git clone https://github.com/Trochez/omo-worker.git /tmp/omo-worker
 mkdir -p ~/.agents/skills/omo-worker
-cp SKILL.md ~/.agents/skills/omo-worker/
+cp /tmp/omo-worker/SKILL.md ~/.agents/skills/omo-worker/
+cp /tmp/omo-worker/README.md ~/.agents/skills/omo-worker/
 ```
 
 **GitHub Repo**: https://github.com/Trochez/omo-worker
@@ -824,7 +833,7 @@ Analyzed authentication flow in src/auth/
 
 - **Documentation**: `DATASHEET.md` (comprehensive reference)
 - **Skill Definition**: `SKILL.md` (implementation details)
-- **Worker Protocol**: `../omo-worker/SKILL.md`
+- **Worker Protocol**: [`/omo-worker`](https://github.com/Trochez/omo-worker) (required dependency)
 
 ---
 
@@ -834,4 +843,4 @@ Open Source - OpenCode Community
 
 ---
 
-**Last Updated**: April 8, 2026
+**Last Updated**: April 15, 2026
