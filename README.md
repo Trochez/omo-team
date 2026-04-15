@@ -639,7 +639,25 @@ ls -la .omo/state/omo-team/*/workers/
 | `/plan` | Plan first, then execute with omo-team |
 | `/ralph` | Use Ralph for verification after team completes |
 | `/ultraqa` | QA cycle after team execution |
-| `omo-worker` | Loaded in each spawned worker |
+| `omo-worker` | **Required** - Worker protocol loaded in each spawned worker |
+
+### Required Dependency: omo-worker
+
+**`/omo-worker` is required** for `/omo-team` to function. Each spawned worker loads this skill to know:
+- How to parse task context
+- Where to write results
+- How to report completion
+- How to handle errors
+
+**Install omo-worker:**
+```bash
+git clone https://github.com/Trochez/omo-worker.git
+cd omo-worker
+mkdir -p ~/.agents/skills/omo-worker
+cp SKILL.md ~/.agents/skills/omo-worker/
+```
+
+**GitHub Repo**: https://github.com/Trochez/omo-worker
 
 ### Custom Decomposition Strategies
 
